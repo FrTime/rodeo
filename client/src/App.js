@@ -5,6 +5,7 @@ import "./App.css";
 import { GlobalContext } from "./global-context";
 import LoadingAnimation from "./components/utils/LoadingAnimation";
 import API from "./components/utils/API";
+import PrimarySearchAppBar from "./components/PrimarySearchAppBar";
 
 class App extends Component {
   constructor(props) {
@@ -18,44 +19,26 @@ class App extends Component {
 
   componentWillMount = async () => {
     console.log(process.env);
-    console.log("App initialization");
+    console.log("App initializing");
     await this.globalWeatherLoad();
   };
 
-  logData = false;
-  forecastRes;
-
   globalWeatherLoad = async () => {
     await this.loadForecast().then(res => {
-      console.log(res.list);
-      this.forecastRes = res.list;
+      this.state.forecast = res.list;
       this.setState({
         forecast: res.list,
         appIsLoading: this.isStillLoading()
       });
-      console.log(this.state.forecast);
+      // console.log(this.state.forecast);
     });
   };
 
-  // logData = false;
-  // loadGlobals = async () => {
-  //   await this.loadTrips()
-  //     .then(res => {
-  //       console.log(`    Fetched ${res.length} trips from the API`);
-  //       if (this.logData) console.log(res);
-  //       this.setState({
-  //         trips: res,
-  //         appIsLoading: this.isStillLoading()
-  //       });
-  //     })
-
-  // };
-
   isStillLoading = () => {
-    console.log(this.state.forecast);
-
     if (!this.forecastLoading) {
       console.log("Loading completed");
+      console.log("Howdy, partner.");
+      console.log(` - Current 5-day forecast`, this.state.forecast);
       // return false;
     }
     return true;
@@ -73,29 +56,13 @@ class App extends Component {
 
   render() {
     if (this.state.appIsLoading) {
-      return <LoadingAnimation />;
+      return (
+      <LoadingAnimation />);
     } else {
       return (
         <GlobalContext.Provider value={this.state}>
-        <h1>
-          {/* {this.forecastRes} */}
-        </h1>
+          <PrimarySearchAppBar />
         </GlobalContext.Provider>
-        // <div className="App">
-        //   <header className="App-header">
-        //     <img src={logo} className="App-logo" alt="logo" />
-        //     <p>
-        //       Edit <code> src / App.js </code> and save to reload.{" "}
-        //     </p>{" "}
-        //     <a
-        //       className="App-link"
-        //       href="https://reactjs.org"
-        //       target="_blank"
-        //       rel="noopener noreferrer">
-        //       Learn React{" "}
-        //     </a>{" "}
-        //   </header>{" "}
-        // </div>
       );
     }
   }
