@@ -39,7 +39,7 @@ class App extends Component {
       console.log("Loading completed");
       console.log("Howdy, partner.");
       console.log(` - Current 5-day forecast`, this.state.forecast);
-      // return false;
+      return false;
     }
     return true;
   };
@@ -56,8 +56,7 @@ class App extends Component {
 
   render() {
     if (this.state.appIsLoading) {
-      return (
-      <LoadingAnimation />);
+      return <LoadingAnimation />;
     } else {
       return (
         <GlobalContext.Provider value={this.state}>
